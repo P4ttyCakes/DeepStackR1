@@ -1,7 +1,14 @@
+
+
 import time
 import undetected_chromedriver as uc
-import selenium
+from selenium.webdriver import Keys
+
+import Methods as m
+import DeepSeekAPiCalls as d
 from selenium.webdriver.common.by import By
+
+from Methods import perform_ai_action, in_opening_range
 
 # Configure Chrome Options
 options = uc.ChromeOptions()
@@ -9,104 +16,52 @@ options.add_argument("--user-data-dir=/Users/patricklu/Library/Application\\ Sup
 options.add_argument("--profile-directory=Profile 4")  # Ensure correct profile
 
 driver = uc.Chrome(options=options)  # Removed use_subprocess=True
-driver.get("https://www.pokernow.club/games/pglra_SjWd0YBmBbT7hrovOfb")
+driver.get("https://www.pokernow.club/games/pglD0COYpPA6GnM-rG808heNC")
 print("✅ PokerNow is open!")
 
 
 
-time.sleep(5)
 
-
-def get_player1_hand(driver):
-    """Returns the hand of player 1 as a list of card values and suits."""
-    hand = []  # List to store card values and suits
-
-    # Find all card containers for player 1
-    player1_card_containers = driver.find_elements(By.CSS_SELECTOR, ".table-player-1 .card-container")
-
-    # Iterate through each card container
-    for container in player1_card_containers:
-        try:
-            # Find the card element within the container
-            card = container.find_element(By.CSS_SELECTOR, ".card")
-
-            # Find the value element within the card
-            value_element = card.find_element(By.CSS_SELECTOR, "span.value")
-            card_value = value_element.text
-
-            # Find the suit element within the card and get its inner text
-            suit_elements = card.find_elements(By.CSS_SELECTOR, "span.suit")
-
-            # There may be multiple suit spans; we'll get the last one (the main suit)
-            card_suit = suit_elements[-1].text  # Get the last span, which represents the card's suit
-
-            # Append the card value and suit to the hand list
-            hand.append([card_value, card_suit])
-
-        except Exception as e:
-            print("Error extracting card value or suit:", e)
-            continue
-
-    return hand
-
-def get_board(driver):
-    """Extracts the board cards from the PokerNow table."""
-    board = []  # List to store board cards
-
-    # Find all board card containers
-    board_card_containers = driver.find_elements(By.CSS_SELECTOR, ".table-cards .card-container")
-
-    for container in board_card_containers:
-        try:
-            # Find the card element
-            card = container.find_element(By.CSS_SELECTOR, ".card")
-
-            # Find the value element
-            value_element = card.find_element(By.CSS_SELECTOR, "span.value")
-            card_value = value_element.text
-
-            # Find the suit element (last span in case of multiple)
-            suit_elements = card.find_elements(By.CSS_SELECTOR, "span.suit")
-            card_suit = suit_elements[-1].text  # Get the last suit span
-
-            # Append the card value and suit to the board list
-            board.append([card_value, card_suit])
-
-        except Exception as e:
-            print("Error extracting board card:", e)
-            continue
-
-    return board
+time.sleep(15)
 
 try:
     while True:
+        if m.your_turn(driver) == True:
 
-        hand = get_player1_hand(driver)
-        print(hand)
+            hand = m.get_player1_hand(driver)
+            board = m.get_board(driver)
+            position = m.position(driver)
+            stack = m.get_stack(driver)
+            opponent_stack = m.opponent_stack(driver)
+            opponent_bet = m.opponent_bet(driver)
+            pot_size = m.get_pot_size(driver)
+            # Format the hand and board for better readability
 
-
-        hand = get_player1_hand(driver)
-        board = get_board(driver)
-
-        print("Player 1 Hand:", hand)
-        print("Board:", board)
-
-        time.sleep(10)
-
-
-
-    # Keep the browser open indefinitely until manually closed
-    input("Press Enter to close the browser...")  # Waits for user input before closing
-
-
-
-
+            print("Board:", board)
+            print("Position:", position)
+            print("Player 1 Hand:", hand)
+            print("Your Stack:", stack)
+            print("Your Bet:", m.your_bet(driver))
+            print("Opponent Stack:", opponent_stack)
+            print("Opponent Bet:", opponent_bet, "\n\n")
+            print("Pot Size:", pot_size)
 
 
+            if len(board) == 0:
+                if in_opening_range(hand, position) == False:
+                    print("Not in opening range, folding...")
+                    m.click_Fold(driver)
+                    continue
 
-    # Keep the browser open indefinitely until manually closed
-    input("Press Enter to close the browser...")  # Waits for user input before closing
+            print("In opening range, proceeding with the game...")
+            action = d.get_ai_decision(hand, board, position, stack, opponent_stack, opponent_bet, pot_size)
+            print("AI Decision:", action)
+            perform_ai_action(driver, action[0], action[1])
+            time.sleep(3)
 
+        else:
+            print("Waiting for your turn...")
+            time.sleep(3)
 
 
 
