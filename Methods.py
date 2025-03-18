@@ -2,7 +2,8 @@ from selenium.webdriver.common.by import By
 import time
 from selenium.webdriver.common.keys import Keys
 
-from range import SB_OPENING_RANGE, BB_DEFENDING_RANGE
+suited_cards = {'Spades': '♠', 'Hearts': '♥', 'Diamonds': '♦', 'Clubs': '♣'}
+
 
 def get_player1_hand(driver):
     """Returns the hand of player 1 as a list of card values and suits."""
@@ -46,21 +47,6 @@ def position(driver):
     except Exception as e:
         return "Not Yet: " + str(e)
 
-def in_opening_range(hand,positon):
-
-    if hand[0][1] == hand[1][1]:
-        handstr = hand[0][0] + hand[1][0] + "s"
-    else:
-        handstr = hand[0][0] + hand[1][0] + "o"
-
-    if position == "Dealer":
-        if handstr not in SB_OPENING_RANGE:
-             return False
-        else:
-            return True
-    else:
-        return True
-
 
 
 
@@ -92,6 +78,19 @@ def get_board(driver):
             continue
 
     return board
+
+
+def format_cards(cards):
+    """Formats and displays a list of poker cards nicely with suit symbols."""
+    suited_cards = {'s': '♠', 'h': '♥', 'd': '♦', 'c': '♣'}
+    formatted_cards = []
+
+    for card_value, card_suit in cards:
+        suit_symbol = suited_cards.get(card_suit, card_suit)  # Default to the original suit if not found
+        formatted_cards.append(f"{card_value}{suit_symbol}")
+
+    return " | ".join(formatted_cards)
+
 
 
 def get_stack(driver):
@@ -173,6 +172,17 @@ def click_Fold(driver):
     try:
         foldButton = driver.find_element(By.CSS_SELECTOR, "button.button-1.action-button.with-tip.fold.red")
         foldButton.click()
+
+        #UNCESSARY FOLD
+        try:
+            if driver.find_element(By.CSS_SELECTOR, ".alert-1-buttons"):
+                driver.find_element(By.CSS_SELECTOR, "button.button-1.red").click()
+                print("Unnecessary fold, Checking Instead")
+                click_Check(driver)
+        except Exception as e:
+            pass
+
+
     except Exception as e:
         print("Error clicking fold button:", e)
 
@@ -193,7 +203,7 @@ def click_Call(driver):
         callButton = driver.find_element(By.CSS_SELECTOR, "button.button-1.action-button.with-tip.call.green")
         callButton.click()
     except Exception as e:
-        print("Error clicking call button:")
+        print("You cannot call in this position, Checking Instead")
         click_Check(driver)
 
 
@@ -208,7 +218,7 @@ def perform_ai_action(driver, decision, betsize):
             input_field = driver.find_element(By.CSS_SELECTOR, "div.value-input-ctn input.value")
             input_field.clear()
             input_field.send_keys(str(betsize) + '0')
-            time.sleep(5)
+            time.sleep(2)
             input_field.send_keys(Keys.RETURN)
 
         except Exception as e:

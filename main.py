@@ -8,7 +8,7 @@ import Methods as m
 import DeepSeekAPiCalls as d
 from selenium.webdriver.common.by import By
 
-from Methods import perform_ai_action, in_opening_range
+from Methods import perform_ai_action, format_cards
 
 # Configure Chrome Options
 options = uc.ChromeOptions()
@@ -16,18 +16,17 @@ options.add_argument("--user-data-dir=/Users/patricklu/Library/Application\\ Sup
 options.add_argument("--profile-directory=Profile 4")  # Ensure correct profile
 
 driver = uc.Chrome(options=options)  # Removed use_subprocess=True
-driver.get("https://www.pokernow.club/games/pglD0COYpPA6GnM-rG808heNC")
-print("✅ PokerNow is open!")
+driver.get("https://www.pokernow.club/games/pglRi-9i189ekbW6j_TsYjHKy")
+print("PokerNow is open!")
 
 
 
 
-time.sleep(15)
+time.sleep(5)
 
 try:
     while True:
         if m.your_turn(driver) == True:
-
             hand = m.get_player1_hand(driver)
             board = m.get_board(driver)
             position = m.position(driver)
@@ -35,35 +34,30 @@ try:
             opponent_stack = m.opponent_stack(driver)
             opponent_bet = m.opponent_bet(driver)
             pot_size = m.get_pot_size(driver)
-            # Format the hand and board for better readability
+            your_bet = m.your_bet(driver)
 
-            print("Board:", board)
-            print("Position:", position)
-            print("Player 1 Hand:", hand)
-            print("Your Stack:", stack)
-            print("Your Bet:", m.your_bet(driver))
-            print("Opponent Stack:", opponent_stack)
-            print("Opponent Bet:", opponent_bet, "\n\n")
-            print("Pot Size:", pot_size)
+            print("\n-------------------- GAME STATE --------------------")
+            print(f"Board:         {format_cards(board)}")
+            print(f"Pot Size:      {pot_size}\n")
 
+            print(f"Your Hand:     {format_cards(hand)}")
+            print(f"Your Stack:    {stack}")
+            print(f"Your Bet:      {your_bet}\n")
 
-            if len(board) == 0:
-                if in_opening_range(hand, position) == False:
-                    print("Not in opening range, folding...")
-                    m.click_Fold(driver)
-                    continue
+            print(f"Opponent Stack: {opponent_stack}")
+            print(f"Opponent Bet:   {opponent_bet}")
+            print("---------------------------------------------------\n")
 
-            print("In opening range, proceeding with the game...")
             action = d.get_ai_decision(hand, board, position, stack, opponent_stack, opponent_bet, pot_size)
-            print("AI Decision:", action)
+            print(f"AI Decision:   {action}\n")
+
             perform_ai_action(driver, action[0], action[1])
-            time.sleep(3)
+            time.sleep(2)
 
         else:
-            print("Waiting for your turn...")
-            time.sleep(3)
-
-
+                print("Waiting for your turn...")
+                while not m.your_turn(driver):
+                    time.sleep(5)
 
 except Exception as e:
-    print(f"❌ Error: {e}")
+    print(f"Error: {e}")

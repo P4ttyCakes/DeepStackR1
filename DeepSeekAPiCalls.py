@@ -58,7 +58,10 @@ def get_ai_decision(hand, board, position, stack, opponent_stack, opponent_bet, 
             --- Strategy Guidelines ---
 
             1. Aggression Wins – The best players apply relentless pressure. Bet and raise often, forcing tough decisions. Maximize fold equity while extracting value from weaker hands. however do not go overboard, often a call is fine. 
-            Do not always raise, when speculative pot odds, call.
+            Do not always raise, when speculative pot odds, call or check is fine, even a fold is good if you are facing a raise.
+            
+            When choosing betting size, apply pressure but do not overbet, as it can scare off weaker hands and attaining maximum value.
+            Example 1: If you have 100BB and the pot is 10BB, a 4BB bet is a good size to extract value without scaring off weaker hands.
             
             When your opponent reraises, you, you must calculate the amount extra you need to put in, and the amount in the pot, and the amount in your stack.
             example 2: if you raise 50BB, and your opponent reraises to 100BB, you have to put in additional 50BB, and the pot will be 200BB, so you have 200/50 = 4 to 1 odds, so you need to have 20% equity to call. 
