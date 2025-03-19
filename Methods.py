@@ -4,7 +4,6 @@ from selenium.webdriver.common.keys import Keys
 
 suited_cards = {'Spades': '♠', 'Hearts': '♥', 'Diamonds': '♦', 'Clubs': '♣'}
 
-
 def get_player1_hand(driver):
     """Returns the hand of player 1 as a list of card values and suits."""
     hand = []  # List to store card values and suits
@@ -46,7 +45,6 @@ def position(driver):
             return "Not Dealer"
     except Exception as e:
         return "Not Yet: " + str(e)
-
 
 
 
@@ -104,7 +102,6 @@ def get_stack(driver):
     return num
 
 
-
 def opponent_stack(driver):
     try:
         stack = driver.find_elements(By.CSS_SELECTOR, ".table-player-2 .table-player-stack .bb-value")[0].text
@@ -116,9 +113,6 @@ def opponent_stack(driver):
         except Exception as e:
             num = 0
     return num
-
-
-
 
 
 
@@ -167,7 +161,6 @@ def get_pot_size(driver):
     return num
 
 
-
 def click_Fold(driver):
     try:
         foldButton = driver.find_element(By.CSS_SELECTOR, "button.button-1.action-button.with-tip.fold.red")
@@ -185,9 +178,6 @@ def click_Fold(driver):
 
     except Exception as e:
         print("Error clicking fold button:", e)
-
-
-
 
 
 
