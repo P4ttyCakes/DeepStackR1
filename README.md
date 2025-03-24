@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-DeepStackR1 is a  Python-based poker assistant that leverages Deepseek-chat to make strategic decisions in real-time online poker games. The project combines web automation, AI decision-making, and poker strategy to create an intelligent Poker Bot.
+DeepStackR1 is a  Python-based poker assistant that leverages Deepseek-chat to make strategic decisions in real-time Heads-Up Texas Hold'em. The project combines web automation, AI decision-making, and poker strategy to create an intelligent Poker Bot.
 
 ## Features
 
