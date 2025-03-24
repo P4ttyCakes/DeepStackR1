@@ -1,12 +1,12 @@
-# DeepStackR1: AI-Powered Poker Assistant
+# DeepStackR1: Deepseek-Powered PokerBot
 
 ## Project Overview
 
-DeepStackR1 is an advanced Python-based poker assistant that leverages artificial intelligence to make strategic decisions in real-time online poker games. The project combines web automation, AI decision-making, and poker strategy to create an intelligent Poker Bot.
+DeepStackR1 is a  Python-based poker assistant that leverages Deepseek-chat to make strategic decisions in real-time online poker games. The project combines web automation, AI decision-making, and poker strategy to create an intelligent Poker Bot.
 
 ## Features
 
-- **Deepseek-Powered Decision Making**: Utilizes DeepSeek-Chat LLM for strategic poker decisions
+- **Deepseek-Powered Decision Making**: Utilizes DeepSeek-Chat LLM through OpenAI API for strategic poker decisions
 - **Web Automation**: Utilizes Selenium for web scraping and interaction with PokerNow Website.
 - **Adaptive Strategy**: Implements complex poker strategies based on game context, feeding context to AI model.
 
@@ -36,13 +36,7 @@ git clone https://github.com/yourusername/DeepStackR1.git
 cd DeepStackR1
 ```
 
-2. Create virtual environment:
-```bash
-python3 -m venv .venv
-source .venv/bin/activate
-```
-
-3. Install dependencies:
+2. Install dependencies:
 ```bash
 pip install -r requirements.txt
 ```
