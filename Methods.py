@@ -79,12 +79,11 @@ def get_board(driver):
 
 
 def format_cards(cards):
-    """Formats and displays a list of poker cards nicely with suit symbols."""
     suited_cards = {'s': '♠', 'h': '♥', 'd': '♦', 'c': '♣'}
     formatted_cards = []
 
     for card_value, card_suit in cards:
-        suit_symbol = suited_cards.get(card_suit, card_suit)  # Default to the original suit if not found
+        suit_symbol = suited_cards.get(card_suit, card_suit)
         formatted_cards.append(f"{card_value}{suit_symbol}")
 
     return " | ".join(formatted_cards)

@@ -9,7 +9,7 @@ options.add_argument("--user-data-dir=/Users/patricklu/Library/Application\\ Sup
 options.add_argument("--profile-directory=Profile 4")  # Ensure correct profile
 
 driver = uc.Chrome(options=options)
-driver.get("https://www.pokernow.club/games/pglRi-9i189ekbW6j_TsYjHKy")
+driver.get("https://www.pokernow.club/games/pgltnJOTG6U6enUeznKGj_s__")
 print("PokerNow is open!")
 
 time.sleep(5)

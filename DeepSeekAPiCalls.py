@@ -12,10 +12,8 @@ client = OpenAI(api_key=DEEPSEEK_API_KEY, base_url= DEEPSEEK_BASE_URL)
 
 
 def format_card(card):
-    """Format a card with full suit name for clearer understanding"""
     value, suit_code = card
 
-    # Convert suit codes to full names
     suit_mapping = {
         's': 'spades',
         'h': 'hearts',
@@ -175,7 +173,6 @@ You have a flush with spades. The highest card in your flush is the King of spad
         )
         response_text = response.choices[0].message.content.strip()
 
-        # Extract decision (first word before the period)
         decision_parts = response_text.split(".")
         decision = decision_parts[0].strip().upper()
 
@@ -183,12 +180,12 @@ You have a flush with spades. The highest card in your flush is the King of spad
 
         if decision == "RAISE":
             try:
-                # Extract bet size (assumes format: "RAISE. [BETSIZE] [Reasoning]")
+
                 words = decision_parts[1].strip().split(" ")
                 bet_size = float(words[0].replace("BB", ""))  # Extract first number as bet size
             except (IndexError, ValueError):
                 print("Invalid AI bet size format. Defaulting to 3BB raise.")
-                bet_size = 3  # Default raise size if AI fails to provide one
+                bet_size = 3
 
         if decision in available_actions:
             print(response_text)
